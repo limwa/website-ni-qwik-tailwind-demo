@@ -1,9 +1,9 @@
 import { component$, useStyles$ } from '@builder.io/qwik';
 import { QwikCity, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { QwikPartytown } from './components/partytown/partytown';
-import { RouterHead } from './components/router-head/router-head';
+import { QwikPartytown } from './components/framework/partytown/partytown';
+import { RouterHead } from './components/framework/router-head/router-head';
 
-import globalStyles from './global.css?inline';
+import globalStyles from './global.css';
 
 export default component$(() => {
   /**
@@ -19,10 +19,10 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
-        <QwikPartytown />
+        {/* <QwikPartytown /> */}
         <RouterHead />
       </head>
-      <body lang="en">
+      <body lang="pt">
         <RouterOutlet />
         <ServiceWorkerRegister />
       </body>

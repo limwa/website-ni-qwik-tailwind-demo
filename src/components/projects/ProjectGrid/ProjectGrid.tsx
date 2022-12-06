@@ -1,5 +1,5 @@
-import { component$, Resource, useResource$ } from "@builder.io/qwik";
-import { z, type ZodType } from "zod";
+import { $, component$, Resource, useResource$, useStore } from "@builder.io/qwik";
+import { z } from "zod";
 import SectionHeader from "~/components/layout/SectionHeader";
 import ProjectContainer from "~/components/projects/ProjectContainer";
 
@@ -23,8 +23,13 @@ export const projectsValidator = z.object({
 type ProjectsResourceType = z.infer<typeof projectsValidator>;
 
 export const ProjectGrid = component$(() => {
+    const store = useStore({
+      hack: 0,
+    });
+    
     
     const projectsResource = useResource$<ProjectsResourceType>(async ({ track, cleanup }) => {
+        track(() => store.hack);
         const abortController = new AbortController();
         cleanup(() => abortController.abort('cleanup'));
 
@@ -41,7 +46,7 @@ export const ProjectGrid = component$(() => {
 
         return parsed;
     });
-
+    
     return (
         <>
             <SectionHeader text="Projetos"/>
@@ -55,9 +60,8 @@ export const ProjectGrid = component$(() => {
                             projects.results.map((project) => (
                                 <div key={project.objectId} class="flex col-span-1 row-span-2 justify-center flex-wrap flex-col flex-grow bg-red-800 p-7 gap-8 rounded-lg bg-opacity-50 backdrop-blur-lg border-2 border-red-500">
                                     <ProjectContainer
-                                        title={project.name}
-                                        subtitle={project.description}
-                                        image_url={project.imageURL}
+                                        {...project}
+                                        updateProjects={$(() => store.hack++)}
                                     />
                                 </div>
                             ))
